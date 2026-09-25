@@ -3,16 +3,15 @@ import pandas as pd
 import joblib
 import os
 
-st.set_page_config(page_title="Test Wellness Tourism Predictor", page_icon="🧳")
+st.set_page_config(page_title="Wellness Tourism Predictor", page_icon="🧳")
 st.title("🧳 Test Wellness Tourism Package — Purchase Predictor")
 
-# Load trained model (same folder as app.py in Streamlit Cloud)
 # Dynamically find the folder where this app.py script is located
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "model.joblib")
 
 if not os.path.exists(MODEL_PATH):
-    st.error("Model file 'model.joblib' not found in deployment folder.")
+    st.error(f"Model file not found at: {MODEL_PATH}")
     st.stop()
 
 model = joblib.load(MODEL_PATH)
@@ -43,7 +42,9 @@ with col2:
     number_of_followups = st.number_input("Number of Followups", 1, 10, 3)
     duration_of_pitch = st.number_input("Duration of Pitch (mins)", 5, 120, 15)
 
+# Added CustomerID just in case the model expects it
 input_df = pd.DataFrame([{
+    "CustomerID": 1,
     "Age": age,
     "TypeofContact": type_of_contact,
     "CityTier": city_tier,
@@ -65,11 +66,16 @@ input_df = pd.DataFrame([{
 }])
 
 if st.button("🔮 Predict"):
-    proba = model.predict_proba(input_df)[0][1]
-    pred = model.predict(input_df)[0]
-    if pred == 1:
-        st.success(f"✅ Likely to purchase (probability: {proba:.2%})")
-    else:
-        st.warning(f"❌ Unlikely to purchase (probability: {proba:.2%})")
-    st.subheader("Input Summary")
-    st.dataframe(input_df.T)
+    try:
+        proba = model.predict_proba(input_df)[0][1]
+        pred = model.predict(input_df)[0]
+        if pred == 1:
+            st.success(f"✅ Likely to purchase (probability: {proba:.2%})")
+        else:
+            st.warning(f"❌ Unlikely to purchase (probability: {proba:.2%})")
+        st.subheader("Input Summary")
+        st.dataframe(input_df.T)
+        
+    except ValueError as e:
+        # This will print the EXACT missing column name on the screen
+        st.error(f"VALUE ERROR: {e}")
