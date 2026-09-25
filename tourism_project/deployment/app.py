@@ -44,6 +44,7 @@ with col2:
 
 # Added CustomerID just in case the model expects it
 input_df = pd.DataFrame([{
+    "Unnamed: 0": 0, 
     "CustomerID": 1,
     "Age": age,
     "TypeofContact": type_of_contact,
