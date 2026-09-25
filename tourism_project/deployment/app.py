@@ -3,11 +3,14 @@ import pandas as pd
 import joblib
 import os
 
-st.set_page_config(page_title="Wellness Tourism Predictor", page_icon="🧳")
+st.set_page_config(page_title="Test Wellness Tourism Predictor", page_icon="🧳")
 st.title("🧳 Test Wellness Tourism Package — Purchase Predictor")
 
 # Load trained model (same folder as app.py in Streamlit Cloud)
-MODEL_PATH = "model.joblib"
+# Dynamically find the folder where this app.py script is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "model.joblib")
+
 if not os.path.exists(MODEL_PATH):
     st.error("Model file 'model.joblib' not found in deployment folder.")
     st.stop()
