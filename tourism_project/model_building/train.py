@@ -47,14 +47,13 @@ param_grid = {
 # It reads the variable injected by the pipeline.yml
 # Falls back to local if the environment variable isn't found
 # mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000"))
-
-mlflow_public_url = os.environ.get("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000")
-mlflow_experiment_name = "test_aml_and_mlops"
-  
+# mlflow.set_experiment("tourism_wellness_package")
 
 # MLflow tracking
+mlflow_public_url = os.environ.get("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000")
+mlflow_experiment_name = os.environ.get("MLFLOW_EXPERIMENT_NAME", "tourism_wellness_package")
+
 mlflow.set_tracking_uri(mlflow_public_url)
-# mlflow.set_experiment("tourism_wellness_package")
 mlflow.set_experiment(mlflow_experiment_name)
 
 print("MLflow experiment name:", mlflow_experiment_name)
