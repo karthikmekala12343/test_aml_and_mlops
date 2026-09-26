@@ -67,7 +67,7 @@ jobs:
       - name: Model Building
         env:
           MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
-          MLFLOW_EXPERIMENT_NAME: ${{ secrets.MLFLOW_EXPERIMENT_NAME }} 
+          MLFLOW_EXPERIMENT_NAME: ${{ secrets.MLFLOW_EXPERIMENT_NAME }}
         run: python tourism_project/model_building/train.py
       - name: Commit Trained Model
         run: |
